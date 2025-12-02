@@ -1,71 +1,66 @@
-import { useState } from "react";
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import Icon from '@/components/ui/icon';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  return (
-    <header className="bg-white shadow-md sticky top-0 z-50">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          <a href="/" className="flex items-center gap-3">
-            <div className="text-3xl">⚡</div>
-            <div>
-              <h1 className="text-xl font-bold text-blue-900">UpLink-CTRL</h1>
-              <p className="text-xs text-gray-500">Слаботочные системы</p>
-            </div>
-          </a>
+  const navItems = [
+    { title: 'Главная', path: '/' },
+    { title: 'Видеонаблюдение', path: '/cctv' },
+    { title: 'ЛВС', path: '/lan' },
+    { title: 'СКС', path: '/scs' },
+    { title: 'СКУД', path: '/acs' },
+    { title: 'Контакты', path: '/contacts' },
+  ];
 
-          <nav className="hidden md:flex items-center gap-6">
-            <a href="/" className="text-gray-700 hover:text-blue-600 font-medium transition">
-              Главная
-            </a>
-            <a href="/cctv" className="text-gray-700 hover:text-blue-600 font-medium transition">
-              Видеонаблюдение
-            </a>
-            <a href="/lan" className="text-gray-700 hover:text-blue-600 font-medium transition">
-              ЛВС
-            </a>
-            <a href="/scs" className="text-gray-700 hover:text-blue-600 font-medium transition">
-              СКС
-            </a>
-            <a href="/acs" className="text-gray-700 hover:text-blue-600 font-medium transition">
-              СКУД
-            </a>
-            <a href="/contacts" className="text-gray-700 hover:text-blue-600 font-medium transition">
-              Контакты
-            </a>
-          </nav>
+  return (
+    <header className="bg-secondary/80 backdrop-blur-sm sticky top-0 z-50 border-b border-muted">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-20">
+          <Link to="/" className="flex items-center space-x-3">
+            <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+              <Icon name="Shield" size={24} className="text-white" />
+            </div>
+            <div>
+              <div className="text-xl font-bold font-montserrat text-white">UPLINK CONTROL</div>
+              <div className="text-xs text-muted-foreground">Слаботочные системы</div>
+            </div>
+          </Link>
 
           <button
-            className="md:hidden text-2xl"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="lg:hidden text-white p-2"
+            aria-label="Toggle menu"
           >
-            {isMenuOpen ? "✕" : "☰"}
+            <Icon name={isMenuOpen ? 'X' : 'Menu'} size={28} />
           </button>
+
+          <nav className="hidden lg:flex items-center space-x-1">
+            {navItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary hover:bg-muted/50 rounded-lg transition-all"
+              >
+                {item.title}
+              </Link>
+            ))}
+          </nav>
         </div>
 
         {isMenuOpen && (
-          <nav className="md:hidden pb-4 border-t">
-            <div className="flex flex-col gap-3 pt-4">
-              <a href="/" className="text-gray-700 hover:text-blue-600 font-medium transition py-2">
-                Главная
-              </a>
-              <a href="/cctv" className="text-gray-700 hover:text-blue-600 font-medium transition py-2">
-                Видеонаблюдение
-              </a>
-              <a href="/lan" className="text-gray-700 hover:text-blue-600 font-medium transition py-2">
-                ЛВС
-              </a>
-              <a href="/scs" className="text-gray-700 hover:text-blue-600 font-medium transition py-2">
-                СКС
-              </a>
-              <a href="/acs" className="text-gray-700 hover:text-blue-600 font-medium transition py-2">
-                СКУД
-              </a>
-              <a href="/contacts" className="text-gray-700 hover:text-blue-600 font-medium transition py-2">
-                Контакты
-              </a>
-            </div>
+          <nav className="lg:hidden pb-4 space-y-2">
+            {navItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                onClick={() => setIsMenuOpen(false)}
+                className="block px-4 py-3 text-foreground hover:bg-muted rounded-lg transition-all"
+              >
+                {item.title}
+              </Link>
+            ))}
           </nav>
         )}
       </div>
